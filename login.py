@@ -2,6 +2,7 @@ import json
 import os
 import hashlib
 
+global permitted
 permitted = False
 
 def hash_password(password):
@@ -32,17 +33,20 @@ def register(username, password):
 
 
 def login(username, password):
+    global permitted
     with open('users.json', 'r') as f:
         users = json.load(f)
     
     if username not in users:
         return "User not found"
     
-    if users[username] == hash_password(password):
+    if users[username]["password"] == hash_password(password):
         print("Successfully logged in")
-        permitted = True
+        permitted= True
+        print(f"login{permitted}")
     else:
         print("Invalid password")
         permitted = False
+        print(f"login{permitted}")
     
-# print(register("admin", "admin"))
+# print(register("CoolUsername", "password123"))

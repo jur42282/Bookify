@@ -1,10 +1,11 @@
 import json
-import login
-import books
-import search
+import login, books, search
+from login import *
+
 
 
 def main():
+    global permitted
     while True:
         print("Welcome to the library")
         print("1. Login")
@@ -14,14 +15,15 @@ def main():
         if choice == "1":
             username = input("Enter username: ")
             password = input("Enter password: ")
-            print(login.login(username, password))
-            if login.permitted:
+            login(username, password)
+            if permitted:
                 global user
                 user = username
-                print(user)
+                print(f"main{permitted}")
                 break
-            else:
+            if permitted == False:
                 print("Invalid username or password")
+                print(f"main{permitted}")
         elif choice == "2":
             username = input("Enter username: ")
             password = input("Enter password: ")
@@ -36,15 +38,24 @@ def main():
             while True:
                 print("1. Lent book")
                 print("2. Return book")
-                print("3. Exit")
+                print("3. Search book by name")
+                print("4. Search book by author")
+                print("5. Exit")
                 choice = input("Enter choice: ")
 
                 if choice == "1":
                     book_isbn = input("Enter ISBN: ")
                     print(lent_book(user, book_isbn))
                 elif choice == "2":
-                    pass
+                    book_isbn = input("Enter ISBN: ")
+                    print(return_book(user, book_isbn))
                 elif choice == "3":
+                    title = input("Enter title: ")
+                    print(search.search_book(title))
+                elif choice == "4":
+                    author = input("Enter author: ")
+                    print(search.search_author(author))
+                elif choice == "5":
                     break
                 else:
                     print("Invalid choice")
