@@ -1,20 +1,17 @@
 import json
-import os
 import hashlib
 
 global permitted
-permitted = False
 
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
 def register(username, password):
-    if not os.path.exists('users.json'):
-        with open('users.json', 'w') as f:
-            json.dump({}, f)
-    
-    with open('users.json', 'r') as f:
-        users = json.load(f)
+    try:
+        with open('users.json', 'r') as f:
+            users = json.load(f)
+    except FileNotFoundError:
+        users = {}
     
     if username in users:
         return "User already exists"
@@ -49,4 +46,4 @@ def login(username, password):
         permitted = False
         print(f"login{permitted}")
     
-# print(register("CoolUsername", "password123"))
+login("admin", "admin")
