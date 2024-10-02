@@ -4,10 +4,9 @@ import booksmanager
 import search
 
 
-
 def main():
+    print("Welcome to the library")
     while True:
-        print("Welcome to the library")
         print("1. Login")
         print("2. Register")
         choice = input("Enter choice: ")
@@ -70,12 +69,60 @@ def main():
                     print(book)
 
             elif choice == "5":
-                print(users.list_users())
+                with open('users.json', 'r') as f:
+                    users = json.load(f)
+                for user in users.items():
+                    print(user)
 
             elif choice == "6":
                 login.permitted = False
                 print("Successfully logged out")
                 break
+            else:
+                print("Invalid choice")
+
+    if users[user]["is_admin"] == False:
+        while True:
+            print("1. Search book")
+            print("2. List all books")
+            print("3. Lent book")
+            print("4. Return book")
+            print("5. Logout")
+            choice = input("Enter choice: ")
+
+            if choice == "1":
+                print("1. Search by title")
+                print("2. Search by author")
+                search_choice = input("Enter choice: ")
+
+                if search_choice == "1":
+                    title = input("Enter title: ")
+                    print(search.search_book(title))
+
+                elif search_choice == "2":
+                    author = input("Enter author: ")
+                    print(search.search_author(author))
+            
+            elif choice == "2":
+                with open('books.json', 'r') as f:
+                        books = json.load(f)
+                for  book in books.items():
+                    print(book)
+
+            elif choice == "3":
+                book_isbn = input("Enter ISBN of book to lend: ")
+                print(lent_book(user, book_isbn))
+
+            elif choice == "4":
+                book_isbn = input("Enter ISBN of book to return: ")
+                print(return_book(user, book_isbn))
+
+            elif choice == "5":
+                login.permitted = False
+                print("Successfully logged out")
+                break
+            else:
+                print("Invalid choice")
 
 def lent_book(user, book_isbn):
     with open('books.json', 'r') as f:
